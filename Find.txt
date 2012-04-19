@@ -8,9 +8,27 @@ Find Day 1
 
 Find Day 2
 
-1.
+1.  The implementation of some of the commonly used macros in the
+Clojure language
 
-2.
+unless:
+(defmacro unless [pred a b]
+  `(if (not ~pred) ~a ~b))
+
+
+nif:
+(defmacro nif [expr pos zer neg]
+	'(case (Integer/signum ~expr)
+	-1 ~neg
+	0 ~zer
+	1 ~pos))
+
+when:
+(defmacro when [test &body]
+	(list 'if test(cons 'do body)))
+
+
+2.  
 
 3.  The current status of the defrecord and protocol features (these features
 were still under development as this book was being developed)
