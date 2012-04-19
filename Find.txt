@@ -1,6 +1,15 @@
 Find Day 1
 
-1.
+1. user => (apply str (interpose "|" ["hi" "mum" "and" "dad"]))
+"hi|mum|and|dad"
+
+user=> (reverse [1 2 3])
+(3 2 1)
+
+user=> (next [1 2 3 4 5])
+(2 3 4 5)
+
+http://en.wikibooks.org/wiki/Clojure_Programming/Examples/API_Examples/Sequences#Sequence_Building
 
 2.
 
