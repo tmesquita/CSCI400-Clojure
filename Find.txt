@@ -7,4 +7,4 @@ Find
 3.  The current status of the defrecord and protocol features (these features
 were still under development as this book was being developed)
 
-defrecord was added to Clojure 1.2
+defrecord and protocols were added to Clojure 1.2
