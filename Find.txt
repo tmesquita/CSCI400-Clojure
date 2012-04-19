@@ -13,7 +13,8 @@ http://en.wikibooks.org/wiki/Clojure_Programming/Examples/API_Examples/Sequences
 
 2.
 
-3.
+3. java -cp clojure.jar clojure.main
+http://clojure.org/repl_and_main
 
 Find Day 2
 
