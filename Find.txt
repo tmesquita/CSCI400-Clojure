@@ -11,7 +11,9 @@ user=> (next [1 2 3 4 5])
 
 http://en.wikibooks.org/wiki/Clojure_Programming/Examples/API_Examples/Sequences#Sequence_Building
 
-2.
+2. (fn name? ([params* ] exprs*)+)
+
+http://clojure.org/special_forms
 
 3. java -cp clojure.jar clojure.main
 http://clojure.org/repl_and_main
