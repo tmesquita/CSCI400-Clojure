@@ -5,4 +5,13 @@ Thomas Mesquita
 Alan Nguyen
 Aaron Lebahn
 
+Display Board (2)
+Alternate players (2)
+Accept and validates player input (4)
+Winning condition(display winning player) (4)
+Rudimentary AI (4)
+Restart game (2)
+Comments (2)
+
+
 Total Points 20
