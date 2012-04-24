@@ -9,11 +9,7 @@
 (defmacro
 	unless
 	[test if-body else-body]
-	'(if
-		(not ~test)
-		~if-body
-		~else-body
-	)
+	(list 'if (list 'not test) if-body else-body)
 )
 
 ; 2. Write a type using defrecord that implements a protocol.
