@@ -12,6 +12,12 @@
 	(list 'if (list 'not test) if-body else-body)
 )
 
+(println "(unless false (println "true") (println ("false")))")
+(unless false (println "true") (println ("false")))
+
+(println "(unless false (println "false") (println ("true")))")
+(unless false (println "false") (println ("true")))
+
 ; 2. Write a type using defrecord that implements a protocol.
 
 (defprotocol Counter
