@@ -5,13 +5,16 @@ Thomas Mesquita
 Alan Nguyen
 Aaron Lebahn
 
-Display Board (2)
-Alternate players (2)
-Accept and validates player input (4)
-Winning condition(display winning player) (4)
-Rudimentary AI (4)
-Restart game (2)
-Comments (2)
+(2) Display Board
+(2) Allow players to take turns
+(4) Accept and validates player input
+(4) Winning condition
+		End game when player has won or no remaining turns
+		Display winner
+(4) Rudimentary AI
+		Allow player to select AI as second player
+(2) Restart game
+(2) Sufficient Comments
 
 
 Total Points 20
