@@ -1,5 +1,8 @@
 Clojure Project Rubric
+Tic Tac Toe(clojure style)
 
 Thomas Mesquita
 Alan Nguyen
 Aaron Lebahn
+
+Total Points 20
