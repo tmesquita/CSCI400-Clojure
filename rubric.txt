@@ -1,0 +1,5 @@
+Clojure Project Rubric
+
+Thomas Mesquita
+Alan Nguyen
+Aaron Lebahn
