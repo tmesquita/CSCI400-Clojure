@@ -15,3 +15,18 @@
 		~else-body
 	)
 )
+
+; 2. Write a type using defrecord that implements a protocol.
+
+(defprotocol Counter
+(value [c])
+(increment [c])        
+(decrement [c]))
+
+(defrecord SimpleCounter [count]
+Counter
+(value [_] count)
+(increment [_] (SimpleCounter. (+ count 1)))
+(decrement [_] (SimpleCounter. (- count 1)))
+)
+
