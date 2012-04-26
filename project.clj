@@ -32,14 +32,26 @@
 			(let [bRow (makeRow)]
 			(recur (inc row), (cons bRow buttons)))))))
 
+(defn addButtonAction "Adds an action listener to the buttons" [buttons]
+	(let [actionListener
+		(proxy [ActionListener] []
+			(actionPerformed [evt]
+				(JOptionPane/showMessageDialog nil, "Click")))]
+		(dorun (map (fn [row]
+			(dorun (map (fn [button]
+				(.addActionListener button actionListener)) row))) buttons))))
+
 (defn addButtons! "Adds buttons to the window" [buttons frame]
-	(dorun (map (fn [row] (dorun (map (fn [button] (.add frame button)) row))) buttons)))
+	(dorun (map (fn [row]
+		(dorun (map (fn [button]
+			(.add frame button)) row))) buttons)))
 
 (defn showWindow "Initializes and shows the main Window" []
 	(let [mainWindow (JFrame. "Tic-Tac-Toe"), buttons (makeButtons)]
 		(.setDefaultCloseOperation mainWindow JFrame/EXIT_ON_CLOSE)
 		(.setSize mainWindow 300 300)
 		(.setLayout mainWindow (GridLayout. 3 3))
+		(addButtonAction buttons)
 		(addButtons! buttons mainWindow)
 		(.setVisible mainWindow true)
 	)
