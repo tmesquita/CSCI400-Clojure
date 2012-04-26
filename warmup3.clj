@@ -44,3 +44,52 @@
 	(alter accounts debit "2" 100)
 )
 (println @accounts)
+
+;Write a multithreaded program to determine how many haircuts a barber can give in ten seconds
+(def waitingRoom (java.util.concurrent.LinkedBlockingQueue. 3))
+(def numHaircuts (atom 0))
+(def continue? (atom true))
+
+(defn open 
+	[length] 
+	(println "Start")
+	(Thread/sleep length)
+	(swap! continue? not)
+	(Thread/sleep 35)
+	(println "Finished")
+	(println "Number of haircuts: " @numHaircuts)
+	(System/exit 0)
+)
+
+(defn newCustomer
+	[]
+	(future
+		(while @continue?
+			(.put waitingRoom "customer")
+			(println "New customer, waiting room size: " (.size waitingRoom))
+			(Thread/sleep (+ 10 (rand-int 21)))
+		)
+	)
+)
+
+(defn cutHair
+	[]
+	(future
+		(while @continue?
+			(when-let [item (.poll waitingRoom)]
+				(println "Hair cut complete")
+				(Thread/sleep 20)
+				(swap! numHaircuts inc)
+			)
+		)
+	)
+)
+
+(defn start
+	[]
+	(dorun (repeatedly 1 newCustomer))
+	(dorun (repeatedly 1 cutHair))
+	(open 10000)
+)
+
+(start)
