@@ -12,7 +12,9 @@ Aaron Lebahn
 		End game when player has won or no remaining turns
 		Display winner
 (4) Rudimentary AI
-		Allow player to select AI as second player
+		Allow player to select Smart AI or Dumb AI
+		(3) Smart AI
+		(1) Dumb AI
 (2) Restart game
 (2) Sufficient Comments
 
