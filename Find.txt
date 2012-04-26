@@ -49,3 +49,13 @@ when:
 were still under development as this book was being developed)
 
 defrecord and protocols were added to Clojure 1.2
+
+Find Day 3
+
+A queue implementation that blocks when the queue is empty and
+waits for a new item in the queue
+
+http://stackoverflow.com/questions/2760017/producer-consumer-with-qualifications
+
+
+
