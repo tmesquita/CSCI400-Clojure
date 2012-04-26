@@ -32,7 +32,7 @@
 			(let [bRow (makeRow)]
 			(recur (inc row), (cons bRow buttons)))))))
 
-(defn addButtonAction "Adds an action listener to the buttons" [buttons]
+(defn addButtonAction! "Adds an action listener to the buttons" [buttons]
 	(let [actionListener
 		(proxy [ActionListener] []
 			(actionPerformed [evt]
@@ -51,7 +51,7 @@
 		(.setDefaultCloseOperation mainWindow JFrame/EXIT_ON_CLOSE)
 		(.setSize mainWindow 300 300)
 		(.setLayout mainWindow (GridLayout. 3 3))
-		(addButtonAction buttons)
+		(addButtonAction! buttons)
 		(addButtons! buttons mainWindow)
 		(.setVisible mainWindow true)
 	)
