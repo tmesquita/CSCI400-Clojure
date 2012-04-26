@@ -32,12 +32,15 @@
 			(let [bRow (makeRow)]
 			(recur (inc row), (cons bRow buttons)))))))
 
+(defn addButtons! "Adds buttons to the window" [buttons frame]
+	(dorun (map (fn [row] (dorun (map (fn [button] (.add frame button)) row))) buttons)))
+
 (defn showWindow "Initializes and shows the main Window" []
 	(let [mainWindow (JFrame. "Tic-Tac-Toe"), buttons (makeButtons)]
 		(.setDefaultCloseOperation mainWindow JFrame/EXIT_ON_CLOSE)
 		(.setSize mainWindow 300 300)
 		(.setLayout mainWindow (GridLayout. 3 3))
-		(println buttons)
+		(addButtons! buttons mainWindow)
 		(.setVisible mainWindow true)
 	)
 )
