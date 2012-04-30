@@ -23,6 +23,9 @@
 	[[locx locy] player board]
 )
 
+(defn checkWin [board]
+  )
+
 (defn makeRow "Makes a row of buttons" []
 	(loop [col 0, buttons nil]
 	(if (= col 3)
@@ -46,15 +49,25 @@
 (defn plantText! "Puts the board state onto buttons" [buttons board]
   (dorun (map (fn [butRow boardRow] (dorun (map (fn [button sq] (.setText button sq)) butRow boardRow))) buttons board)))
 
+(defn moveAndCheckWin! [buttons coordinates board]
+  (if (validateMove coordinates board)
+    (let [newBoard (move coordinates board "X")
+          winState (checkWin newBoard)]
+      (plantText! buttons newBoard)
+      (comment (if (nil? winState)
+        (declareWinAndRestart! winSate buttons)
+        )))
+    (JOptionPane/showMessageDialog nil "You're an idiot.")))
+
 (defn addButtonAction! "Adds an action listener to the buttons" [buttons]
   (let [actionListener
         (proxy [ActionListener] []
           (actionPerformed [evt]
-            (let [coordinates (map (fn [c] (- (int c) (int \0))) (.getActionCommand evt)),
-                  board (harvestText buttons)]
-            (if (validateMove coordinates board)
-              (plantText! buttons (move coordinates board "X"))
-              (JOptionPane/showMessageDialog nil "You're an idiot.")))))]
+            (moveAndCheckWin!
+              buttons
+              (map (fn [c] (- (int c) (int \0))) (.getActionCommand evt))
+              (harvestText buttons))
+            ))]
               (dorun (map-indexed (fn [x row]
                           (dorun (map-indexed (fn [y button]
                                                 (do (.addActionListener button actionListener)
