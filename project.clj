@@ -13,8 +13,11 @@
 		(= value " "))
 )
 
-(defn move "Performs the player's move" [[locx locy] board]
-  )
+(defn move "Performs the player's move" [[locx locy] board player]
+  (map-indexed (fn [x row] (map-indexed (fn [y sq]
+                                          (if (and (= x locx) (= y locy))
+                                            player
+                                            sq)) row)) board))
 
 (defn makeMove "Places Move at given location for given player on given board"
 	[[locx locy] player board]
@@ -24,7 +27,7 @@
 	(loop [col 0, buttons nil]
 	(if (= col 3)
 		buttons
-		(let [button (JButton. "X")]
+		(let [button (JButton. " ")]
 			(recur (inc col), (cons button buttons))))))
 
 (defn makeButtons "returns a 3x3 vector of buttons" []
@@ -40,6 +43,9 @@
          (map (fn [button]
                 (.getText button)) row)) buttons))
 
+(defn plantText! "Puts the board state onto buttons" [buttons board]
+  (dorun (map (fn [butRow boardRow] (dorun (map (fn [button sq] (.setText button sq)) butRow boardRow))) buttons board)))
+
 (defn addButtonAction! "Adds an action listener to the buttons" [buttons]
   (let [actionListener
         (proxy [ActionListener] []
@@ -47,8 +53,8 @@
             (let [coordinates (map (fn [c] (- (int c) (int \0))) (.getActionCommand evt)),
                   board (harvestText buttons)]
             (if (validateMove coordinates board)
-              (move coordinates board)
-              (JOptionPane/showMessageDialog nil "You're an Idiot.")))))]
+              (plantText! buttons (move coordinates board "X"))
+              (JOptionPane/showMessageDialog nil "You're an idiot.")))))]
               (dorun (map-indexed (fn [x row]
                           (dorun (map-indexed (fn [y button]
                                                 (do (.addActionListener button actionListener)
