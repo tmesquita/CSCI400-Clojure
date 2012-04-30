@@ -36,10 +36,12 @@
 	(let [actionListener
 		(proxy [ActionListener] []
 			(actionPerformed [evt]
-				(JOptionPane/showMessageDialog nil, "Click")))]
-		(dorun (map (fn [row]
-			(dorun (map (fn [button]
-				(.addActionListener button actionListener)) row))) buttons))))
+				(JOptionPane/showMessageDialog nil,
+					(.getActionCommand evt))))]
+		(dorun (map-indexed (fn [x row]
+			(dorun (map-indexed (fn [y button]
+				(do (.addActionListener button actionListener)
+				(.setActionCommand button (str x y)))) row))) buttons))))
 
 (defn addButtons! "Adds buttons to the window" [buttons frame]
 	(dorun (map (fn [row]
