@@ -19,9 +19,8 @@
                                             player
                                             sq)) row)) board))
 
-(defn makeMove "Places Move at given location for given player on given board"
-	[[locx locy] player board]
-)
+(defn chooseMove "Calculates the computer's move" [board]
+  '[1 1])
 
 (defn compareRow [row]
 	(if(= row '(X X X))
@@ -63,29 +62,45 @@
 (defn plantText! "Puts the board state onto buttons" [buttons board]
   (dorun (map (fn [butRow boardRow] (dorun (map (fn [button sq] (.setText button sq)) butRow boardRow))) buttons board)))
 
-(defn moveAndCheckWin! [buttons coordinates board]
+(defn declareWinAndRestart! [winState buttons]
+  (JOptionPane/showMessageDialog
+    nil
+    (if (= winState :X)
+      "X WINS!"
+      (if (= winState :O)
+        "O WINS!"
+        "IT'S A TIE!")))
+  (dorun (map (fn [row] (dorun (map (fn [button] (.setText button " ")) row))) buttons)))
+
+(defn takeTurn! "Performs a move to coordinates, checks for a win, and calls next turn if neccesary"
+  [buttons coordinates board turn]
+  (let [newBoard (move coordinates board turn)
+        winState (checkWin newBoard)]
+    (plantText! buttons newBoard)
+    (if (nil? winState)
+      (if (= turn "X")
+        (takeTurn! buttons (chooseMove newBoard) newBoard "O"))
+      (declareWinAndRestart! winState buttons))))
+
+(defn validateAndMove! "Validates the player's input then runs the turn"
+  [buttons coordinates board]
   (if (validateMove coordinates board)
-    (let [newBoard (move coordinates board "X")
-          winState (checkWin newBoard)]
-      (plantText! buttons newBoard)
-      (comment (if (nil? winState)
-        (declareWinAndRestart! winSate buttons)
-        )))
+    (takeTurn! buttons coordinates board "X")
     (JOptionPane/showMessageDialog nil "You're an idiot.")))
 
 (defn addButtonAction! "Adds an action listener to the buttons" [buttons]
   (let [actionListener
         (proxy [ActionListener] []
           (actionPerformed [evt]
-            (moveAndCheckWin!
-              buttons
+            (validateAndMove! buttons
               (map (fn [c] (- (int c) (int \0))) (.getActionCommand evt))
-              (harvestText buttons))
-            ))]
-              (dorun (map-indexed (fn [x row]
-                          (dorun (map-indexed (fn [y button]
-                                                (do (.addActionListener button actionListener)
-                                                  (.setActionCommand button (str x y)))) row))) buttons))))
+              (harvestText buttons))))]
+    (dorun (map-indexed
+             (fn [x row]
+               (dorun (map-indexed
+                        (fn [y button]
+                          (do (.addActionListener button actionListener)
+                            (.setActionCommand button (str x y)))) row))) buttons))))
 
 (defn addButtons! "Adds buttons to the window" [buttons frame]
 	(dorun (map (fn [row]
