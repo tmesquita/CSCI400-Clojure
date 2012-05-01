@@ -25,24 +25,24 @@
   		coordinates
   		(chooseMove board))))
 
-(defn compareRow [row]
+(defn compareRow "Checks a row for a winning condition" [row]
 	(if(= row '("X" "X" "X"))
 		:X
 		(if (= row '("O" "O" "O"))
 			:O
 			false)))
 
-(defn getDiagonals [board]
+(defn getDiagonals "Returns the diagonal rows" [board]
 	(list (map-indexed (fn[i row] (nth row i)) board) (map-indexed (fn[i row] (nth row (- 2 i))) board)))
 
-(defn findSpaces [board]
+(defn findSpaces "Checks if the board has empty spaces" [board]
 	(if(empty? board)
 		false
 		(if(not (nil? (some #{" "} (first board))))
 			true
 			(findSpaces (rest board)))))
 
-(defn checkRowsAndCols [board fullBoard]
+(defn checkRowsAndCols "Checks the board for a winning condition" [board fullBoard]
 	(if(empty? board)
 		(if(findSpaces fullBoard)
 			nil
@@ -51,7 +51,7 @@
 			(checkRowsAndCols (rest board) fullBoard)
 			(compareRow (first board)))))
 
-(defn checkWin [board]
+(defn checkWin "Checks if a player has won" [board]
 	(checkRowsAndCols (concat board (apply map list board) (getDiagonals board)) board))
 
 (defn makeRow "Makes a row of buttons" []
