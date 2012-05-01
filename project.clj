@@ -61,16 +61,7 @@
 
 (defn moveAndCheckWin! [buttons coordinates board]
   (if (validateMove coordinates board)
-    (do (takeTurn! buttons (move coordinates board "X"))
-    (comment (let [newBoard (move coordinates board "X")
-          winState (checkWin newBoard)]
-      (plantText! buttons newBoard)
-      (if (nil? winState)
-        (let [newNewBoard (move (chooseMove newBoard) board)
-              newWinState (checkWin newNewBoard)]
-          (plantText! buttons newNewBoard)
-        (declareWinAndRestart! winSate buttons)
-        )))))
+    (takeTurn! buttons (move coordinates board "X"))
     (JOptionPane/showMessageDialog nil "You're an idiot.")))
 
 (defn addButtonAction! "Adds an action listener to the buttons" [buttons]
