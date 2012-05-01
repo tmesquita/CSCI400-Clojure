@@ -23,21 +23,33 @@
   '[1 1])
 
 (defn compareRow [row]
-	(if(= row '(X X X))
+	(if(= row '("X" "X" "X"))
 		:X
-		(if (= row '(O O O))
+		(if (= row '("O" "O" "O"))
 			:O
 			false)))
 
-(defn checkRowsAndCols [board]
+(defn findSpaces [board]
 	(if(empty? board)
-		:Tie
+		false
+		(if(not (nil? (some #{" "} (first board))))
+			true
+			(findSpaces (rest board)))))
+
+(defn checkRowsAndCols [board fullBoard]
+	(println fullBoard)
+	(println (some #{" "} (first fullBoard)))
+	(println (count (first fullBoard)))
+	(if(empty? board)
+		(if(findSpaces fullBoard)
+			nil
+			:Tie)
 		(if(false? (compareRow (first board)))
-			(checkRowsAndCols (rest board))
+			(checkRowsAndCols (rest board) fullBoard)
 			(compareRow (first board)))))
 
 (defn checkWin [board]
-	(checkRowsAndCols (concat board (apply map list board))))
+	(checkRowsAndCols (concat board (apply map list board)) board))
 
 (defn makeRow "Makes a row of buttons" []
 	(loop [col 0, buttons nil]
