@@ -20,7 +20,10 @@
                                             sq)) row)) board))
 
 (defn chooseMove "Calculates the computer's move" [board]
-  '[0 1])
+  (let [coordinates (repeatedly 2 #(rand-int 3))]
+  	(if (validateMove coordinates board)
+  		coordinates
+  		(chooseMove board))))
 
 (defn compareRow [row]
 	(if(= row '("X" "X" "X"))
@@ -28,6 +31,7 @@
 		(if (= row '("O" "O" "O"))
 			:O
 			false)))
+
 (defn getDiagonals [board]
 	(list (map-indexed (fn[i row] (nth row i)) board) (map-indexed (fn[i row] (nth row (- 2 i))) board)))
 
@@ -48,7 +52,6 @@
 			(compareRow (first board)))))
 
 (defn checkWin [board]
-	(println (getDiagonals board))
 	(checkRowsAndCols (concat board (apply map list board) (getDiagonals board)) board))
 
 (defn makeRow "Makes a row of buttons" []
