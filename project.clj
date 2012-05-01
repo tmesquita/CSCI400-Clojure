@@ -20,7 +20,7 @@
                                             sq)) row)) board))
 
 (defn chooseMove "Calculates the computer's move" [board]
-  '[1 1])
+  '[0 1])
 
 (defn compareRow [row]
 	(if(= row '("X" "X" "X"))
@@ -28,6 +28,8 @@
 		(if (= row '("O" "O" "O"))
 			:O
 			false)))
+(defn getDiagonals [board]
+	(list (map-indexed (fn[i row] (nth row i)) board) (map-indexed (fn[i row] (nth row (- 2 i))) board)))
 
 (defn findSpaces [board]
 	(if(empty? board)
@@ -37,9 +39,6 @@
 			(findSpaces (rest board)))))
 
 (defn checkRowsAndCols [board fullBoard]
-	(println fullBoard)
-	(println (some #{" "} (first fullBoard)))
-	(println (count (first fullBoard)))
 	(if(empty? board)
 		(if(findSpaces fullBoard)
 			nil
@@ -49,7 +48,8 @@
 			(compareRow (first board)))))
 
 (defn checkWin [board]
-	(checkRowsAndCols (concat board (apply map list board)) board))
+	(println (getDiagonals board))
+	(checkRowsAndCols (concat board (apply map list board) (getDiagonals board)) board))
 
 (defn makeRow "Makes a row of buttons" []
 	(loop [col 0, buttons nil]
