@@ -19,9 +19,8 @@
                                             player
                                             sq)) row)) board))
 
-(defn makeMove "Places Move at given location for given player on given board"
-	[[locx locy] player board]
-)
+(defn chooseMove "Calculates the computer's move" [board]
+  '[1 1])
 
 (defn checkWin [board]
   )
@@ -52,16 +51,17 @@
 (defn declareWinAndRestart! [winState buttons]
   )
 
-(defn takeTurn! [buttons board]
+(defn takeTurn! [buttons board nextturn]
   (let [winState (checkWin board)]
     (plantText! buttons board)
     (if (nil? winState)
-      ()
+      (if (= nextturn "O")
+        (takeTurn! buttons (move (chooseMove board) board nextturn) "X"))
       (declareWinAndRestart! winState buttons))))
 
 (defn moveAndCheckWin! [buttons coordinates board]
   (if (validateMove coordinates board)
-    (takeTurn! buttons (move coordinates board "X"))
+    (takeTurn! buttons (move coordinates board "X") "O")
     (JOptionPane/showMessageDialog nil "You're an idiot.")))
 
 (defn addButtonAction! "Adds an action listener to the buttons" [buttons]
