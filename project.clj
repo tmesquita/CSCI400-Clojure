@@ -58,7 +58,8 @@
         "IT'S A TIE!")))
   (dorun (map (fn [row] (dorun (map (fn [button] (.setText button " ")) row))) buttons)))
 
-(defn takeTurn! [buttons coordinates board turn]
+(defn takeTurn! "Performs a move to coordinates, checks for a win, and calls next turn if neccesary"
+  [buttons coordinates board turn]
   (let [newBoard (move coordinates board turn)
         winState (checkWin newBoard)]
     (plantText! buttons newBoard)
@@ -67,7 +68,8 @@
         (takeTurn! buttons (chooseMove newBoard) newBoard "O"))
       (declareWinAndRestart! winState buttons))))
 
-(defn validateAndMove! [buttons coordinates board]
+(defn validateAndMove! "Validates the player's input then runs the turn"
+  [buttons coordinates board]
   (if (validateMove coordinates board)
     (takeTurn! buttons coordinates board "X")
     (JOptionPane/showMessageDialog nil "You're an idiot.")))
@@ -79,10 +81,12 @@
             (validateAndMove! buttons
               (map (fn [c] (- (int c) (int \0))) (.getActionCommand evt))
               (harvestText buttons))))]
-    (dorun (map-indexed (fn [x row]
-                          (dorun (map-indexed (fn [y button]
-                                                (do (.addActionListener button actionListener)
-                                                  (.setActionCommand button (str x y)))) row))) buttons))))
+    (dorun (map-indexed
+             (fn [x row]
+               (dorun (map-indexed
+                        (fn [y button]
+                          (do (.addActionListener button actionListener)
+                            (.setActionCommand button (str x y)))) row))) buttons))))
 
 (defn addButtons! "Adds buttons to the window" [buttons frame]
 	(dorun (map (fn [row]
