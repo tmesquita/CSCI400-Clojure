@@ -51,29 +51,28 @@
 (defn declareWinAndRestart! [winState buttons]
   )
 
-(defn takeTurn! [buttons board nextturn]
-  (let [winState (checkWin board)]
-    (plantText! buttons board)
+(defn takeTurn! [buttons coordinates board turn]
+  (let [newBoard (move coordinates board turn)
+        winState (checkWin newBoard)]
+    (plantText! buttons newBoard)
     (if (nil? winState)
-      (if (= nextturn "O")
-        (takeTurn! buttons (move (chooseMove board) board nextturn) "X"))
+      (if (= turn "X")
+        (takeTurn! buttons (chooseMove newBoard) newBoard "O"))
       (declareWinAndRestart! winState buttons))))
 
 (defn moveAndCheckWin! [buttons coordinates board]
   (if (validateMove coordinates board)
-    (takeTurn! buttons (move coordinates board "X") "O")
+    (takeTurn! buttons coordinates board "X")
     (JOptionPane/showMessageDialog nil "You're an idiot.")))
 
 (defn addButtonAction! "Adds an action listener to the buttons" [buttons]
   (let [actionListener
         (proxy [ActionListener] []
           (actionPerformed [evt]
-            (moveAndCheckWin!
-              buttons
+            (moveAndCheckWin! buttons
               (map (fn [c] (- (int c) (int \0))) (.getActionCommand evt))
-              (harvestText buttons))
-            ))]
-              (dorun (map-indexed (fn [x row]
+              (harvestText buttons))))]
+    (dorun (map-indexed (fn [x row]
                           (dorun (map-indexed (fn [y button]
                                                 (do (.addActionListener button actionListener)
                                                   (.setActionCommand button (str x y)))) row))) buttons))))
