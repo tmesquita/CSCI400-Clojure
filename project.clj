@@ -49,14 +49,28 @@
 (defn plantText! "Puts the board state onto buttons" [buttons board]
   (dorun (map (fn [butRow boardRow] (dorun (map (fn [button sq] (.setText button sq)) butRow boardRow))) buttons board)))
 
+(defn declareWinAndRestart! [winState buttons]
+  )
+
+(defn takeTurn! [buttons board]
+  (let [winState (checkWin board)]
+    (plantText! buttons board)
+    (if (nil? winState)
+      ()
+      (declareWinAndRestart! winState buttons))))
+
 (defn moveAndCheckWin! [buttons coordinates board]
   (if (validateMove coordinates board)
-    (let [newBoard (move coordinates board "X")
+    (do (takeTurn! buttons (move coordinates board "X"))
+    (comment (let [newBoard (move coordinates board "X")
           winState (checkWin newBoard)]
       (plantText! buttons newBoard)
-      (comment (if (nil? winState)
+      (if (nil? winState)
+        (let [newNewBoard (move (chooseMove newBoard) board)
+              newWinState (checkWin newNewBoard)]
+          (plantText! buttons newNewBoard)
         (declareWinAndRestart! winSate buttons)
-        )))
+        )))))
     (JOptionPane/showMessageDialog nil "You're an idiot.")))
 
 (defn addButtonAction! "Adds an action listener to the buttons" [buttons]
